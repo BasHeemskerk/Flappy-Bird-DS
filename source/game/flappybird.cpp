@@ -14,8 +14,8 @@ void FB_GAME::init(){
     srand(time(0));
 
     //initialize our nitrofox handler
-    NF_HANDLER::init_nf_handler("NITROFS", Constants::GAME_SCREEN, Constants::GAME_SCREEN);
-    NF_HANDLER::initBackgrounds(Constants::GAME_SCREEN, Constants::GAME_SCREEN);
+    NF_HANDLER::init_nf_handler("NITROFS", Constants::GAME_SCREEN, Constants::DEBUG_SCREEN);
+    NF_HANDLER::initBackgrounds(Constants::GAME_SCREEN, Constants::DEBUG_SCREEN);
     NF_HANDLER::initSprites(Constants::GAME_SCREEN);
 
     //initialize our audio clip handler
@@ -108,7 +108,7 @@ void FB_GAME::resetGame(){
 void FB_GAME::gameLoop(){
     GAME_STATE gs = MENU;
     GAME_STATE prevState = MENU;
-
+ 
     while (true){
 
         DS_INPUT::scan();
@@ -138,10 +138,6 @@ void FB_GAME::gameLoop(){
 
                 break;
             case DEAD:
-                if (gScore > hiScore){
-                    IO_HANDLER::saveHighscore(Constants::SAVE_PATH, gScore);
-                    hiScore = gScore;
-                }
 
                 if (DS_INPUT::anyKeyPressed(keyDown) || DS_INPUT::touchDown(keyDown)){
                     resetGame();
@@ -149,9 +145,7 @@ void FB_GAME::gameLoop(){
                 }
 
                 bird.interpolateXPos();
-
                 bird.checkTopAndBottomCollision();
-
                 bird.update(true);
 
                 break;
